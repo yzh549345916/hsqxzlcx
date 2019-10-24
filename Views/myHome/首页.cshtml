@@ -41,8 +41,8 @@
             .Name("drawer")
             .Template(@"
             <ul>
-                <li data-role='drawer-item' class='k-state-selected'><span class='k-icon k-i-table-unmerge'></span><span class='k-item-text'>表格</span></li>
-                <li data-role='drawer-item'><span class='k-icon k-i-stumble-upon'></span><span class='k-item-text'>图表</span></li>                
+                <li data-role='drawer-item'><span class='k-icon k-i-table-unmerge'></span><span class='k-item-text'>表格</span></li>   
+                <li data-role='drawer-item' class='k-state-selected'><span class='k-icon k-i-stumble-upon '></span><span class='k-item-text'>图表</span></li>            
                 <li data-role='drawer-item'><span class='k-icon icos icos-zx'></span><span class='k-item-text'>图表测试</span></li>  
                 <li data-role='drawer-item'><span class='k-icon k-i-hyperlink-email'></span><span class='k-item-text'>Attachments</span></li>
                 <li data-role='drawer-item'><span class='k-icon k-i-star-outline k-i-bookmark-outline'></span><span class='k-item-text'>Favourites</span></li>
@@ -188,7 +188,9 @@
                 edatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", edatetimepicker.value()),
                 datazl: myzlzl.value()
             };
-        }
+            }
+
+            
         function cxClick() {
             const myGrid = $("#mygrid").data("kendoGrid");
 
@@ -198,7 +200,8 @@
             return {
                 text: $("#selects").val()
             };
-        }
+            }
+           
         function startChange() {
             const endPicker = $("#end").data("kendoDateTimePicker");
             var startDate = this.value();
@@ -219,7 +222,55 @@
                 endDate.setDate(endDate.getDate() - 1);
                 startPicker.max(endDate);
             }
+            }
+            
+            function additionalDatac1() {
+            const startDate = $("#startc1").data("kendoDateTimePicker");
+            const edatetimepicker = $("#endc1").data("kendoDateTimePicker");
+            const myzlzl = $("#selectsc1").data("kendoMultiSelect");
+            return {
+                sdatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", startDate.value()),
+                edatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", edatetimepicker.value()),
+                datazl: myzlzl.value()
+            };
+            }
+
+			function cxClickc1() {
+          
+
+          }
+        function onAdditionalDatac1() {
+            return {
+                text: $("#selectsc1").val()
+            };
+            }
+           
+        function startChangec1() {
+            const endPicker = $("#endc1").data("kendoDateTimePicker");
+            var startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate() + 1);
+                endPicker.min(startDate);
+            }
         }
+
+        function endChangec1() {
+            const startPicker = $("#startc1").data("kendoDateTimePicker");
+            var endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate() - 1);
+                startPicker.max(endDate);
+            }
+            }
+        
+
+
+
+
         </script>
 
         <style>
