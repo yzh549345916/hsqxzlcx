@@ -1,0 +1,258 @@
+﻿@{
+    ViewBag.Title = "首页";
+}
+
+    <div id="myKJ" >
+        @(Html.Kendo().ToolBar().Name("toolbar").Items(items =>
+       {
+           items.Add().Type(CommandType.Button).Icon("menu").HtmlAttributes(new { @class = "k-flat" }).Click("toggleDrawer");
+           items.Add().Template("<h3 style='margin-left: 20px;'>呼和浩特市气象资料数据查询系统</h3>");
+
+               items.Add().Type(CommandType.Spacer);
+               items.Add().Type(CommandType.Separator);
+           items.Add().Type(CommandType.SplitButton).Text("主题选择").Id("mythemeSelect").Overflow(ShowInOverflowPopup.Never).MenuButtons(menuButtons =>
+           {
+               menuButtons.Add().Text("自定义V4").Id("bootstrap-v4");
+               menuButtons.Add().Text("拟物v2").Id("material-v2");
+               menuButtons.Add().Text("默认V2").Id("default-v2");
+               menuButtons.Add().Text("默认").Id("default");
+               menuButtons.Add().Text("宝蓝").Id("blueopal");
+               menuButtons.Add().Text("自定义").Id("bootstrap");
+               menuButtons.Add().Text("深色").Id("black");
+               menuButtons.Add().Text("silver").Id("silver");
+               menuButtons.Add().Text("灰色").Id("uniform");
+               menuButtons.Add().Text("metro").Id("metro");
+               menuButtons.Add().Text("metro深色").Id("metroblack");
+               menuButtons.Add().Text("高对比度").Id("highcontrast");
+               menuButtons.Add().Text("拟物").Id("material");
+               menuButtons.Add().Text("拟物深色").Id("materialblack");
+               menuButtons.Add().Text("月光").Id("moonlight");
+               menuButtons.Add().Text("office365").Id("office365");
+               menuButtons.Add().Text("nova").Id("nova");
+               menuButtons.Add().Text("flat").Id("flat");
+               menuButtons.Add().Text("fiori").Id("fiori");
+           }).Click("themeSelect");
+           items.Add().Type(CommandType.Button).Text("Action").Overflow(ShowInOverflowPopup.Auto);
+           items.Add().Type(CommandType.Button).Text("Another Action").Overflow(ShowInOverflowPopup.Auto);
+           items.Add().Type(CommandType.Button).Text("Something else here").Overflow(ShowInOverflowPopup.Auto);
+       }))
+
+        @(Html.Kendo().Drawer()
+            .Name("drawer")
+            .Template(@"
+            <ul>
+                <li data-role='drawer-item' class='k-state-selected'><span class='k-icon k-i-table-unmerge'></span><span class='k-item-text'>表格</span></li>
+                <li data-role='drawer-item'><span class='k-icon k-i-stumble-upon'></span><span class='k-item-text'>图表</span></li>                
+                <li data-role='drawer-item'><span class='k-icon icos icos-zx'></span><span class='k-item-text'>图表测试</span></li>  
+                <li data-role='drawer-item'><span class='k-icon k-i-hyperlink-email'></span><span class='k-item-text'>Attachments</span></li>
+                <li data-role='drawer-item'><span class='k-icon k-i-star-outline k-i-bookmark-outline'></span><span class='k-item-text'>Favourites</span></li>
+            </ul>
+        ")
+                .Mode("push")
+                .Mini(true)
+                .Position("left")
+                .MinHeight(330)
+                .SwipeToOpen(true)
+                .Content("<div id='drawerContainer'></div>")
+        .Events(x => x.ItemClick("onItemClick")))
+
+        <script>
+            function toggleDrawer() {
+                const drawerInstance = $("#drawer").data().kendoDrawer;
+                const drawerContainer = drawerInstance.drawerContainer;
+                if (drawerContainer.hasClass("k-drawer-expanded")) {
+                    drawerInstance.hide();
+                } else {
+                    drawerInstance.show();
+                }
+            }
+
+            function themeSelect(e) {
+                //window.kendoThemeChooser.changeTheme(e.id, true);
+            /**/
+                if (e.id != 'mythemeSelect') {
+                     var tt=$("#" + e.id).text();
+                $("#mythemeSelect").text(tt);
+                window.kendoThemeChooser.mychangeTheme(e.id, true);
+				}
+
+            /**/
+
+            }
+            $(function () {
+                if ("@ViewBag.Theme" == "bootstrap-v4")
+                    $("#mythemeSelect").text("自定义V4");
+                else if("@ViewBag.Theme" == "material-v2")
+                    $("#mythemeSelect").text("质感v2");
+                else if("@ViewBag.Theme" == "default-v2")
+                    $("#mythemeSelect").text("默认v2");
+                else if("@ViewBag.Theme" == "default")
+                    $("#mythemeSelect").text("默认");
+                else if("@ViewBag.Theme" == "blueopal")
+                    $("#mythemeSelect").text("宝蓝");
+                else if("@ViewBag.Theme" == "bootstrap")
+                    $("#mythemeSelect").text("自定义");
+                else if("@ViewBag.Theme" == "black")
+                    $("#mythemeSelect").text("深色");
+                else if("@ViewBag.Theme" == "uniform")
+                    $("#mythemeSelect").text("灰色");
+                else if("@ViewBag.Theme" == "highcontrast")
+                    $("#mythemeSelect").text("高对比度");
+                else if("@ViewBag.Theme" == "material")
+                    $("#mythemeSelect").text("拟物");
+                else if("@ViewBag.Theme" == "metroblack")
+                    $("#mythemeSelect").text("metro深色");
+                else if("@ViewBag.Theme" == "materialblack")
+                    $("#mythemeSelect").text("拟物深色");
+                else if("@ViewBag.Theme" == "moonlight")
+                    $("#mythemeSelect").text("月光");
+                else
+                    $("#mythemeSelect").text("@ViewBag.Theme");
+
+			});
+        function changeTheme2(skinName, animate) {
+            var doc = document,
+                kendoLinks = $("link[href*='kendo.']"),
+                commonLink = kendoLinks.filter("[href*='kendo.common']"),
+                skinLink = kendoLinks.filter(":not([href*='kendo.common'])"),
+                url = location.href,
+                skinRegex = /kendo\.\w+(\.min)?\.css/i,
+                extension = skinLink.attr("rel") === "stylesheet" ? ".css" : ".less",
+                newSkinUrl = skinLink.attr("href").replace(skinRegex, "kendo." + skinName + "$1" + extension);
+
+            function preloadStylesheet(file, callback) {
+                var element = $("<link rel='stylesheet' href='" + file + "' \/>").appendTo("head");
+
+                setTimeout(function () {
+                    callback();
+                    element.remove();
+                }, 100);
+            }
+
+            function replaceTheme() {
+                var browser = kendo.support.browser,
+                    oldSkinName = $(doc).data("kendoSkin"),
+                    newLink;
+
+                if (browser.msie && browser.version < 10) {
+                    newLink = doc.createStyleSheet(newSkinUrl);
+                } else {
+                    newLink = skinLink.eq(0).clone().attr("href", newSkinUrl);
+                    newLink.insertBefore(skinLink[0]);
+                }
+
+                skinLink.remove();
+
+                $(doc.documentElement).removeClass("k-" + oldSkinName).addClass("k-" + skinName);
+            }
+
+            if (animate) {
+                preloadStylesheet(url, replaceTheme);
+            } else {
+                replaceTheme();
+            }
+        };
+        $(function (e) {
+            $.ajax({
+                url: "/RKTJ/MyCustom",
+                method: 'GET',
+                success: function (result) {
+                    $('#drawerContainer').html(result);
+                }
+            });
+        });
+
+        function onItemClick(e) {
+            //e.sender.drawerContainer.find("#drawer-content > div").addClass("hidden");
+            //e.sender.drawerContainer.find("#drawer-content").find("#" + e.item.find(".k-item-text").text()).removeClass("hidden");
+            const itName = e.item.find(".k-item-text").text();
+            $.ajax({
+                url: "/RKTJ/MyCustoms",
+                method: 'POST',
+                data: {
+                    dataName: itName
+                },
+                success: function (result) {
+                    $('#drawerContainer').html(result);
+                    $('title').html(itName + ' - 呼和浩特市气象资料数据查询系统');
+                }
+            });
+        }
+
+        function additionalData() {
+            const startDate = $("#start").data("kendoDateTimePicker");
+            const edatetimepicker = $("#end").data("kendoDateTimePicker");
+            const myzlzl = $("#selects").data("kendoMultiSelect");
+            return {
+                sdatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", startDate.value()),
+                edatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", edatetimepicker.value()),
+                datazl: myzlzl.value()
+            };
+        }
+        function cxClick() {
+            const myGrid = $("#mygrid").data("kendoGrid");
+
+            myGrid.dataSource.read();
+        }
+        function onAdditionalData() {
+            return {
+                text: $("#selects").val()
+            };
+        }
+        function startChange() {
+            const endPicker = $("#end").data("kendoDateTimePicker");
+            var startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate() + 1);
+                endPicker.min(startDate);
+            }
+        }
+
+        function endChange() {
+            const startPicker = $("#start").data("kendoDateTimePicker");
+            var endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate() - 1);
+                startPicker.max(endDate);
+            }
+        }
+        </script>
+
+        <style>
+            #drawer-content li {
+                font-size: 1.2em;
+                background: 0 0;
+                border-radius: 0;
+                border-width: 0 0 1px;
+                border-color: rgba(33, 37, 41, 0.125);
+                border-style: solid;
+                line-height: 1.5em;
+                padding: .84em .84em 1.23em .84em;
+            }
+
+                #drawer-content li:last-child {
+                    border: 0;
+                }
+
+            .hidden {
+                display: none;
+            }
+
+            .icos {
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: transparent;
+        }
+
+            .icos-zx {
+                background-image: url('../../Content/icos/折线图.png');
+            }
+        </style>
+    </div>
+
+

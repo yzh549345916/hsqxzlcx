@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<script>
+	window.kendoTheme = "@ViewBag.Theme";
+	window.kendoCommonFile = "@ViewBag.CommonFile";
+</script>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title - 呼和浩特市气象资料数据查询系统</title>
+    @foreach (string styleName in Kendo.Mvc.Examples.Models.StyleGroups.All)
+    {
+        @Html.StyleLink(styleName, (string)ViewBag.Theme, (string)ViewBag.CommonFile)
+    }
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/kendo/2019.3.917/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2019.3.917/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2019.3.917/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2019.3.917/kendo.aspnetmvc.min.js")"></script>
+    <script src=@Url.Content("~/Scripts/kendo/2019.3.917/cultures/kendo.culture.zh-CN.min.js")></script>
+    <script src=@Url.Content("~/Scripts/kendo/2019.3.917/messages/kendo.messages.zh-CN.min.js")></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="~/Scripts/theme-chooser.js"></script>
+    <script>
+
+        function resizeContainers() {
+            var headerHeight = $("#header").outerHeight(),
+                navbarWrapper = $("#example-nav-bar").height(),
+                webinarBarHeight = $("#webinar-banner:visible").outerHeight() + 2 || 0,
+                htmlHeight = (kendo.support.mobileOS) ? parseFloat(window.innerHeight) : $('html').height(),
+                sidebarHeight = htmlHeight - headerHeight - webinarBarHeight,
+                borderSize = 2,
+                navHeight = sidebarHeight - (navbarWrapper + borderSize);
+
+            $(".k-no-flexbox #example-sidebar").height(sidebarHeight);
+            $(".k-no-flexbox  #nav-wrapper").height(navHeight);
+            $(".k-no-flexbox  #main").height(sidebarHeight);
+        }
+
+        $(function () {
+            if (kendo.support.mobileOS) {
+                $(document.documentElement).addClass("k-hover-enabled");
+            }
+        });
+        function themeSelect(e) {
+            window.kendoThemeChooser.changeTheme(e.id, true);
+        }
+        $(document).ready(resizeContainers);
+        $(window).resize(resizeContainers);
+    </script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+</head>
+<body class="k-content">
+
+
+    <main>
+        <div class="container-fluid">
+            @RenderBody()
+           
+        </div>
+    </main>
+
+    <footer class="footer text-center d-flex align-items-center">
+        <div class="container-fluid">
+            <p>Copyright &copy; 2019-@DateTime.Now.Year 内蒙古华雨新气象科技有限公司. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+		kendo.culture("zh-CN");
+		$(document).ready(function () {
+			$("#responsive-panel").kendoResponsivePanel({
+				breakpoint: 768,
+				autoClose: false,
+				orientation: "top"
+			});
+		});
+       
+	</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "入库信息表格查询";
+}
+@using TelerikMvcApp3.Models
+<div class="placeholders">
+    <div class="row d-flex justify-content-start" style="margin-top: 2em;">
+        <div class="col-2">
+        </div>
+        <div class="col-2 text-center align-content-center">
+            <p>开始日期</p>
+            <p>
+                @(Html.Kendo().DateTimePicker()
+                               .Name("start")
+                               .Value(DateTime.Today.AddDays(-3))
+                               .Max(DateTime.Today.AddDays(1))
+                               .ParseFormats(new[] { "yyyy年MM月dd日HH时" })
+                               .Events(e => e.Change("startChange"))
+                             .WeekNumber(true)
+                               .HtmlAttributes(new { style = "width:100%;" }))
+                </ p >
+        </div>
+        <div class="col-2 text-center">
+            <p>结束日期</p>
+            <p>
+                @(Html.Kendo().DateTimePicker()
+                               .Name("end")
+                             .WeekNumber(true)
+                               .Value(DateTime.Today)
+                               .Min(DateTime.Today)
+                               .ParseFormats(new[] { "yyyy年MM月dd日HH时" })
+                               .Events(e => e.Change("endChange"))
+                               .HtmlAttributes(new { style = "width:100%;" })
+                )
+            </p>
+        </div>
+        <div class="col-3 text-center">
+            <p>资料种类</p>
+            <p>
+                @(Html.Kendo().MultiSelect()
+      .Name("selects")
+      .TagMode(TagMode.Multiple)
+      .DataTextField("表名称").DataValueField("数据库表名称")
+      .Placeholder("请选择待查询数据种类")
+      .DataSource(source => source
+          .Custom()
+          .Transport(transport => transport
+            .Read(read =>
+            {
+                read.Action("GetCustomers", "RKTJ").Data("onAdditionalData");
+            }))
+          .ServerFiltering(false))
+                    .AutoClose(false)
+                )
+            </p>
+
+
+        </div>
+        <div class="col-1">
+
+            <p style=" position:absolute;bottom:0;">
+                @(Html.Kendo().Button()
+                             .Name("cxButton")
+                             .Content("查询")
+                             .Icon("search")
+
+                             .HtmlAttributes(new { @class = "textButton k-primary" })
+                    .Events(ev => ev.Click("cxClick")))
+            </p>
+        </div>
+
+    </div>
+    <div class="row " style="margin-top: 2em;">
+        <div class="col-1">
+
+        </div>
+        <div class="col-10">
+            @(Html.Kendo().Grid<SKViewModel>()
+                .Name("mygrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.名称).HeaderHtmlAttributes(new { style = "padding-left:3em;font-weight:bold;", @class = "text-center" }).HtmlAttributes(new { @class = "text-center" });
+                    //columns.Bound(p => p.Freight);
+                    columns.Bound(p => p.时间).Format("{0:yyyy年MM月dd日HH时}").HeaderHtmlAttributes(new { style = "padding-left:3em;font-weight:bold;", @class = "text-center" }).HtmlAttributes(new { @class = "text-center" }).Filterable(filt => filt.UI(GridFilterUIRole.DateTimePicker)); ;
+                    columns.Bound(p => p.统计个数).HeaderHtmlAttributes(new { style = "padding-left:3em;font-weight:bold;", @class = "text-center" }).HtmlAttributes(new { @class = "text-center" }); ;
+
+                })
+
+                .Pageable(pageable => pageable
+                    .Refresh(true)
+                    .PageSizes(new[] { 10, 100, 1000 })
+                    .ButtonCount(5))
+                .Sortable()
+                .ToolBar(tools => tools.Excel().Text("导出到Excel"))
+                .ToolBar(tools => tools.Pdf().Text("导出到PDF"))
+                .Pdf(pdf => pdf
+    .AllPages()
+    .AvoidLinks()
+    .PaperSize("A4")
+
+    .Scale(0.8)
+    .Margin("2cm", "1cm", "1cm", "1cm")
+    .Landscape()
+    .RepeatHeaders().FileName("杨泽华PDF.pdf")
+
+)
+                .Excel(excel => excel
+.FileName("我的表格.xlsx").Filterable(true)
+                    .AllPages(true).ForceProxy(true)
+.ProxyURL(Url.Action("Excel_Export_Save", "Grid"))
+)
+                .Scrollable()
+                .Filterable()
+                .HtmlAttributes(new { style = "height:550px;" })
+                .Groupable()
+                .Selectable()
+
+                .DataSource(dataSource => dataSource.Ajax().PageSize(100).Read(read => read.Action("Orders_Read2", "RKTJ").Data("additionalData"))))
+        </div>
+    </div>
+</div>
+<script>
+
+        function additionalData() {
+			const startDate = $("#start").data("kendoDateTimePicker");
+            const edatetimepicker = $("#end").data("kendoDateTimePicker");
+            const myzlzl=$("#selects").data("kendoMultiSelect");
+        return {
+           sdatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", startDate.value()),
+            edatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", edatetimepicker.value()),
+            datazl: myzlzl.value()
+        };
+    }
+        function cxClick() {
+			const myGrid = $("#mygrid").data("kendoGrid");
+
+			myGrid.dataSource.read();
+		}
+         function onAdditionalData() {
+        return {
+            text: $("#selects").val()
+        };
+    }
+		function startChange() {
+			const endPicker = $("#end").data("kendoDateTimePicker");
+			var startDate = this.value();
+
+			if (startDate) {
+				startDate = new Date(startDate);
+				startDate.setDate(startDate.getDate() + 1);
+				endPicker.min(startDate);
+			}
+		}
+
+		function endChange() {
+			const startPicker = $("#start").data("kendoDateTimePicker");
+			var endDate = this.value();
+
+			if (endDate) {
+				endDate = new Date(endDate);
+				endDate.setDate(endDate.getDate() - 1);
+				startPicker.max(endDate);
+			}
+        }
+
+</script>
+
