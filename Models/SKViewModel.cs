@@ -9,6 +9,16 @@ namespace TelerikMvcApp3.Models
             get;
             set;
         }
+        public int 分钟个数
+        {
+            get;
+            set;
+        }
+        public int 小时个数
+        {
+            get;
+            set;
+        }
         public string 名称 { get; set; }
         public string 种类 { get; set; }
 

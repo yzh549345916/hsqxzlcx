@@ -43,7 +43,7 @@
             <ul>
                 <li data-role='drawer-item'><span class='k-icon k-i-table-unmerge'></span><span class='k-item-text'>表格</span></li>   
                 <li data-role='drawer-item' class='k-state-selected'><span class='k-icon k-i-stumble-upon '></span><span class='k-item-text'>图表</span></li>            
-                <li data-role='drawer-item'><span class='k-icon icos icos-zx'></span><span class='k-item-text'>图表测试</span></li>  
+                <li data-role='drawer-item'><span class='k-icon icos icos-zx'></span><span class='k-item-text'>股票图</span></li>  
                 <li data-role='drawer-item'><span class='k-icon k-i-hyperlink-email'></span><span class='k-item-text'>Attachments</span></li>
                 <li data-role='drawer-item'><span class='k-icon k-i-star-outline k-i-bookmark-outline'></span><span class='k-item-text'>Favourites</span></li>
             </ul>
@@ -52,9 +52,9 @@
                 .Mini(true)
                 .Position("left")
                 .MinHeight(330)
-                .SwipeToOpen(true)
-                .Content("<div id='drawerContainer'></div>")
+                .SwipeToOpen(false).Content("<div id='drawerContainer'></div>")
         .Events(x => x.ItemClick("onItemClick")))
+
 
         <script>
             function toggleDrawer() {
@@ -109,7 +109,8 @@
                 else
                     $("#mythemeSelect").text("@ViewBag.Theme");
 
-			});
+            });
+
         function changeTheme2(skinName, animate) {
             var doc = document,
                 kendoLinks = $("link[href*='kendo.']"),
@@ -224,7 +225,22 @@
             }
             }
             
-            function additionalDatac1() {
+           
+            function char1pdfDC() {
+                 $("#c1").getKendoChart().saveAsPDF();
+                //<a href="~/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf">~/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf</a>
+            }
+            function char2pdfDC() {
+                 $("#c2").getKendoChart().saveAsPDF();
+               
+            }
+           kendo.pdf.defineFont({
+            "DejaVu Sans"             : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans.ttf",
+            "DejaVu Sans|Bold"        : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf",
+            "DejaVu Sans|Bold|Italic" : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf",
+            "DejaVu Sans|Italic"      : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans.ttf"
+        });
+             function additionalDatac1() {
             const startDate = $("#startc1").data("kendoDateTimePicker");
             const edatetimepicker = $("#endc1").data("kendoDateTimePicker");
             const myzlzl = $("#selectsc1").data("kendoMultiSelect");
@@ -236,15 +252,33 @@
             }
 
 			function cxClickc1() {
-          
+                var mychart = $("#c1").data("kendoChart"),
+                    series = mychart.options.series,
+                    stack = $("#stack").prop("checked");
+                    $("input[name=seriesType]:checked").val("line");
 
-          }
+                mychart.dataSource.read();
+			
+			}
         function onAdditionalDatac1() {
             return {
                 text: $("#selectsc1").val()
             };
             }
-           
+           function refreshc1() {
+        var chart = $("#c1").data("kendoChart"),
+            series = chart.options.series,
+            type = $("input[name=seriesType]:checked").val(),
+            stack = $("#stack").prop("checked");
+
+        for (var i = 0, length = series.length; i < length; i++) {
+            series[i].stack = stack;
+            series[i].type = type;
+        };
+
+        chart.refresh();
+    }
+
         function startChangec1() {
             const endPicker = $("#endc1").data("kendoDateTimePicker");
             var startDate = this.value();
@@ -266,11 +300,66 @@
                 startPicker.max(endDate);
             }
             }
-        
 
 
 
+             function additionalDatac2() {
+            const startDate = $("#startc2").data("kendoDateTimePicker");
+            const edatetimepicker = $("#endc2").data("kendoDateTimePicker");
+            const myzlzl = $("#selectsc2").data("kendoMultiSelect");
+            return {
+                sdatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", startDate.value()),
+                edatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", edatetimepicker.value()),
+                datazl: myzlzl.value()
+            };
+            }
 
+            function cxClickc2() {
+                
+                var mychart = $("#c2").data("kendoStockChart");
+
+				mychart.dataSource.read();
+			
+			}
+        function onAdditionalDatac2() {
+            return {
+                text: $("#selectsc2").val()
+            };
+            }
+           function refreshc2() {
+        var chart = $("#c2").data("kendoStockChart"),
+            series = chart.options.series,
+            type = $("input[name=seriesType]:checked").val(),
+            stack = $("#stack").prop("checked");
+
+        for (var i = 0, length = series.length; i < length; i++) {
+            series[i].stack = stack;
+            series[i].type = type;
+        };
+
+        chart.refresh();
+    }
+			function startChangec2() {
+            const endPicker = $("#endc2").data("kendoDateTimePicker");
+            var startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate() + 1);
+                endPicker.min(startDate);
+            }
+        }
+
+        function endChangec2() {
+            const startPicker = $("#startc2").data("kendoDateTimePicker");
+            var endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate() - 1);
+                startPicker.max(endDate);
+            }
+            }
         </script>
 
         <style>

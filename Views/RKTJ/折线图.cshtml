@@ -4,107 +4,159 @@
 }
 
 @using TelerikMvcApp3.Models
-<div class="placeholders">
-    <div class="row d-flex justify-content-start" style="margin-top: 2em;">
-        <div class="col-2">
-        </div>
-        <div class="col-2 text-center align-content-center">
-            <p>开始日期</p>
-            <p>
-                @(Html.Kendo().DateTimePicker()
-                               .Name("startc1")
-                               .Value(DateTime.Today)
-                               .Max(DateTime.Today.AddDays(1))
-                               .ParseFormats(new[] { "yyyy年MM月dd日HH时" })
-                               .Events(e => e.Change("startChangec1"))
-                             .WeekNumber(true)
-                               .HtmlAttributes(new { style = "width:100%;" }))
-                </ p >
-        </div>
-        <div class="col-2 text-center">
-            <p>结束日期</p>
-            <p>
-                @(Html.Kendo().DateTimePicker()
-                               .Name("endc1")
-                             .WeekNumber(true)
-                               .Value(DateTime.Now).ParseFormats(new[] { "yyyy年MM月dd日HH时" })
-                               .Events(e => e.Change("endChangec1"))
-                               .HtmlAttributes(new { style = "width:100%;" })
-                )
-            </p>
-        </div>
-        <div class="col-3 text-center">
-            <p>资料种类</p>
-            <p>
-                @(Html.Kendo().MultiSelect()
-      .Name("selectsc1")
-      .TagMode(TagMode.Multiple)
-      .DataTextField("表名称").DataValueField("数据库表名称")
-      .Placeholder("请选择待查询数据种类")
-      .DataSource(source => source
-          .Custom()
-          .Transport(transport => transport
-            .Read(read =>
-            {
-                read.Action("GetCustomers", "RKTJ").Data("onAdditionalDatac1");
-            }))
-          .ServerFiltering(false))
-                    .AutoClose(false)
-                )
-            </p>
+    <div class="placeholders">
+        <div class="row d-flex justify-content-start" style="margin-top: 2em;">
+            <div class="col-2">
+            </div>
+            <div class="col-2 text-center align-content-center">
+                <p>开始日期</p>
+                <p>
+                    @(Html.Kendo().DateTimePicker()
+                                   .Name("startc1")
+                                   .Value(DateTime.Today.AddDays(-1))
+                                   .Max(DateTime.Today.AddDays(1))
+                                   .ParseFormats(new[] { "yyyy年MM月dd日HH时" })
+                                   .Events(e => e.Change("startChangec1"))
+                                 .WeekNumber(true)
+                                   .HtmlAttributes(new { style = "width:100%;" }))
+                    </ p >
+            </div>
+            <div class="col-2 text-center">
+                <p>结束日期</p>
+                <p>
+                    @(Html.Kendo().DateTimePicker()
+                                   .Name("endc1")
+                                 .WeekNumber(true)
+                                   .Value(DateTime.Now).ParseFormats(new[] { "yyyy年MM月dd日HH时" })
+                                   .Events(e => e.Change("endChangec1"))
+                                   .HtmlAttributes(new { style = "width:100%;" })
+                    )
+                </p>
+            </div>
+            <div class="col-3 text-center">
+                <p>资料种类</p>
+                <p>
+                    @(Html.Kendo().MultiSelect()
+          .Name("selectsc1")
+          .TagMode(TagMode.Multiple)
+          .DataTextField("表名称").DataValueField("数据库表名称")
+          .Placeholder("请选择待查询数据种类")
+          .DataSource(source => source
+              .Custom()
+              .Transport(transport => transport
+                .Read(read =>
+                {
+                    read.Action("GetCustomers", "RKTJ").Data("onAdditionalDatac1");
+                }))
+              .ServerFiltering(false))
+                        .AutoClose(false)
+                    )
+                </p>
 
 
-        </div>
-        <div class="col-1">
+            </div>
+            <div class="col-1">
 
-            <p style=" position:absolute;bottom:0;">
-                @(Html.Kendo().Button()
-                             .Name("cxButtonc1")
-                             .Content("查询")
-                             .Icon("search")
-
-                             .HtmlAttributes(new { @class = "textButton k-primary" })
-                    .Events(ev => ev.Click("cxClickc1")))
-            </p>
-        </div>
-
-    </div>
-    <div class="row " style="margin-top: 2em;">
-        <div class="col-1">
+                <p style=" position:absolute;bottom:0;">
+                    @(Html.Kendo().Button()
+                                 .Name("cxButtonc1")
+                                 .Content("查询")
+                                 .Icon("search").HtmlAttributes(new { @class = "textButton k-primary" })
+                        .Events(ev => ev.Click("cxClickc1")))
+                </p>
+            </div>
 
         </div>
-        <div class="col-10">
-            @(Html.Kendo().Chart<SKViewModel>()
-        .Name("c1")
-        .Title("Stock Prices")
-        .DataSource(dataSource => dataSource
-            .Read(read => read.Action("Orders_Read3", "RKTJ").Data("additionalDatac1"))
-            .Group(group => group.Add(model => model.名称))
-            .Sort(sort => sort.Add(model => model.时间).Ascending())
-        )
-        .Series(series => {
-            series.Line(model => model.统计个数)
-                 .Name("#= group.value #").CategoryField("时间");
-        })
-                .CategoryAxis(axis => axis
-        .Date()
-        .BaseUnit(ChartAxisBaseUnit.Hours)
-    )
-        .Legend(legend => legend
-            .Position(ChartLegendPosition.Bottom)
-        )
-        .ValueAxis(axis => axis.Numeric()
-            .Labels(labels => labels.Skip(2)
-                .Step(2)
+        <div class="row" style="margin-top: 2em;">
+            <div class="col-2">
+            </div>
+            <div class="box-col">
+                @Html.Kendo().Button().Content("导出pdf").Name("export-pdf").Events(ev => ev.Click("char1pdfDC"))
+            </div>
+            <ul class="options" style="display:flex;list-style:none;margin-top:0.1em">
+                <li style="margin-left:1em">
+                    <input id="typeColumn" name="seriesType"
+                           type="radio" value="column" autocomplete="off" />
+                    <label for="typeColumn">柱状图</label>
+                </li>
+                <li style="margin-left:1em">
+                    <input id="typeLine" name="seriesType"
+                           type="radio" value="line" checked="checked" autocomplete="off" />
+                    <label for="typeLine">折线图</label>
+                </li>
+                <li style="margin-left:1em">
+                    <input id="typeBar" name="seriesType"
+                           type="radio" value="bar" autocomplete="off" />
+                    <label for="typeBar">条形图</label>
+                </li>
+                <li style="margin-left:1em">
+                    <input id="stack" type="checkbox" autocomplete="off" />
+                    <label for="stack">堆叠显示</label>
+                </li>
+            </ul>
+
+        </div>
+        <div class="row ">
+            <div class="col-1">
+
+            </div>
+
+            <div class="col-10">
+                @(Html.Kendo().Chart<SKViewModel>()
+            .Name("c1")
+            .Title(tit => tit.Text("入库统计信息查询").Font("DejaVu Sans"))
+            .DataSource(dataSource => dataSource
+                .Read(read => read.Action("Orders_Read3", "RKTJ").Data("additionalDatac1"))
+                .Group(group => group.Add(model => model.名称))
+                .Sort(sort => sort.Add(model => model.时间).Ascending())
             )
+            .Series(series =>
+                    {
+                series.Line(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum);
+            })
+             .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日HH时"))
+            .BaseUnit(ChartAxisBaseUnit.Hours)
+                        .MaxDateGroups(20)
+                        .BaseUnitStep(0)
         )
-                .Tooltip(tooltip => tooltip
-            .Visible(true)
-            .Shared(true)
-            .Format("{0:N0}")
-        )
+            .Legend(legend => legend
+                .Position(ChartLegendPosition.Bottom)
+            )
+                    .ChartArea(chartArea => chartArea
+                .Background("transparent")
+            ).Pdf(pdf => pdf
+        .FileName("Kendo UI Chart Export.pdf")
+        .ProxyURL(Url.Action("Export_Save", "RKTJ"))
+            )
+                    .SeriesDefaults(seriesDefaults =>
+                        seriesDefaults.Line().Style(ChartLineStyle.Smooth)
+                    ).ValueAxis(axis => axis.Numeric()
+                        .Labels(labels => labels.Skip(1)
+                            .Step(1)
+                        )
+                        .Title("个数")
+                        .Line(line => line.Visible(false)))
+                       .Tooltip(tooltip => tooltip
+                        .Visible(true)
+                        .Shared(true)
+                           .Format("{0:HH:mm}")
+                             .Opacity(0.8)
+                    )
+                            .Pannable(pn => pn.Lock(ChartAxisLock.Y))
+                    .Zoomable(zb => zb.Mousewheel(sl => sl.Lock(ChartAxisLock.Y)).Selection(se => se.Lock(ChartAxisLock.Y)))
                 )
-
+            </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                $(".options").bind("change", refreshc1);
+
+            });
+        </script>
     </div>
-</div>
+
+    <style>
+        #c1 {
+            height: 600px;
+        }
+    </style>
