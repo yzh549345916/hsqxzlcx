@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "入库信息折线图查询";
+}
+
+@using TelerikMvcApp3.Models
+    <div id="myKJ">
+        <div class="row d-flex justify-content-start" style="margin-top: 2em;">
+            <div class="col-2">
+            </div>
+            <div class="col-2 text-center align-content-center">
+                <p>开始日期</p>
+                <p>
+                    @(Html.Kendo().DateTimePicker()
+                                   .Name("startc2")
+                                   .Value(DateTime.Today.AddDays(-3))
+                                   .Max(DateTime.Today.AddDays(1))
+                                   .ParseFormats(new[] { "yyyy年MM月dd日HH时" })
+                                   .Events(e => e.Change("startChangec2"))
+                                 .WeekNumber(true)
+                                   .HtmlAttributes(new { style = "width:100%;" }))
+                    </ p >
+            </div>
+            <div class="col-2 text-center">
+                <p>结束日期</p>
+                <p>
+                    @(Html.Kendo().DateTimePicker()
+                                   .Name("endc2")
+                                 .WeekNumber(true)
+                                   .Value(DateTime.Now).ParseFormats(new[] { "yyyy年MM月dd日HH时" })
+                                   .Events(e => e.Change("endChangec2"))
+                                   .HtmlAttributes(new { style = "width:100%;" })
+                    )
+                </p>
+            </div>
+            <div class="col-3 text-center">
+                <p>资料种类</p>
+                <p>
+                    @(Html.Kendo().MultiSelect()
+          .Name("selectsc2")
+          .TagMode(TagMode.Multiple)
+          .DataTextField("表名称").DataValueField("数据库表名称")
+          .Placeholder("请选择待查询数据种类")
+          .DataSource(source => source
+              .Custom()
+              .Transport(transport => transport
+                .Read(read =>
+                {
+                    read.Action("GetCustomers", "RKTJ").Data("onAdditionalDatac2");
+                }))
+              .ServerFiltering(false))
+                        .AutoClose(false)
+                    )
+                </p>
+
+
+            </div>
+            <div class="col-1">
+
+                <p style=" position:absolute;bottom:0;">
+                    @(Html.Kendo().Button()
+                                 .Name("cxButtonc2")
+                                 .Content("查询")
+                                 .Icon("search").HtmlAttributes(new { @class = "textButton k-primary" })
+                        .Events(ev => ev.Click("cxClickc2")))
+                </p>
+            </div>
+
+        </div>
+        <div class="row" style="margin-top: 2em;">
+            <div class="col-2">
+            </div>
+            <div class="box-col">
+                @Html.Kendo().Button().Content("导出pdf").Name("export-pdf").Events(ev => ev.Click("char2pdfDC"))
+            </div>
+            <div class="box-col">
+                @Html.Kendo().Button().Content("导出SVG").Name("export-svgc2").Events(ev => ev.Click("exportsvgClickc"))
+            </div>
+            <div class="box-col" style="margin-left:1px">
+                @Html.Kendo().Button().Content("导出PNG").Name("export-pngc2").Events(ev => ev.Click("exportpngClickc"))
+            </div>
+            <ul class="options" id="optionsc2" style="display:flex;list-style:none;margin-top:0.1em">
+                <li style="margin-left:1em">
+                    <input id="typeColumn" name="seriesType"
+                           type="radio" value="column" autocomplete="off" />
+                    <label for="typeColumn">柱状图</label>
+                </li>
+                <li style="margin-left:1em">
+                    <input id="typeLine" name="seriesType"
+                           type="radio" value="line" checked="checked" autocomplete="off" />
+                    <label for="typeLine">折线图</label>
+                </li>
+                <li style="margin-left:1em">
+                    <input id="typeArea" name="seriesType"
+                           type="radio" value="area" autocomplete="off" />
+                    <label for="typeArea">面积图</label>
+                </li>
+                <li style="margin-left:1em">
+                    <input id="stack" type="checkbox" autocomplete="off" />
+                    <label for="stack">堆叠显示</label>
+                </li>
+            </ul>
+
+        </div>
+        <div class="row ">
+            <div class="col-1">
+
+            </div>
+
+            <div class="col-10">
+                @(Html.Kendo().StockChart <SKViewModel>
+    ()
+    .Name("c2")
+    .DateField("时间")
+    .Title(tit => tit.Text("入库统计信息查询"))
+    .DataSource(dataSource => dataSource
+    .Read(read => read.Action("Orders_Read4", "RKTJ").Data("additionalDatac2"))
+    .Group(group => group.Add(model => model.名称))
+    .Sort(sort => sort.Add(model => model.时间).Ascending())
+
+    ).Series(series =>
+    {
+        series.Line(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum);
+    })
+    .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1))
+        
+    //.MaxDateGroups(20)
+    //.BaseUnitStep(0)
+    )
+    .Legend(legend => legend.Position(ChartLegendPosition.Left))
+    .ChartArea(chartArea => chartArea
+    .Background("transparent")
+    ).Pdf(pdf => pdf.FileName("pdf导出.pdf").ProxyURL(Url.Action("Export_Save", "RKTJ")))
+    .SeriesDefaults(seriesDefaults =>seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+    .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个"))
+    .Title("个数")
+    .Line(line => line.Visible(false)))
+    .Tooltip(tooltip => tooltip
+    .Visible(true)
+    .Shared(true)
+    .Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个")
+    ).Navigator(nav => nav
+    .Series(series =>
+    {
+        series.Line(s => s.统计个数);
+    })
+        .Hint(hint=>hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}"))
+    .Select(
+    DateTime.Now.AddHours(-30),
+    DateTime.Now
+    ).CategoryAxis(ca=> {
+        ca.Axis.BaseUnit = ChartAxisBaseUnit.Hours;
+        ca.Axis.Labels.Format="dd日HH时";
+    })
+    )
+    //        .Pannable(pn => pn.Lock(ChartAxisLock.Y))
+    //.Zoomable(zb => zb.Mousewheel(sl => sl.Lock(ChartAxisLock.Y)).Selection(se => se.Lock(ChartAxisLock.Y)))
+    )
+</div>
+        </div>
+        
+    </div>
+    <script>
+            $(document).ready(function () {
+                $("#optionsc2").bind("change", refreshc2);
+            });
+            function char2pdfDC() {
+                 $("#c2").getKendoStockChart().saveAsPDF();
+
+            }
+
+           kendo.pdf.defineFont({
+            "DejaVu Sans"             : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans.ttf",
+            "DejaVu Sans|Bold"        : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf",
+            "DejaVu Sans|Bold|Italic" : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf",
+            "DejaVu Sans|Italic"      : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans.ttf"
+           });
+            function additionalDatac2() {
+            const startDate = $("#startc2").data("kendoDateTimePicker");
+            const edatetimepicker = $("#endc2").data("kendoDateTimePicker");
+            const myzlzl = $("#selectsc2").data("kendoMultiSelect");
+            return {
+                sdatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", startDate.value()),
+                edatepic: kendo.format("{0:yyyy/MM/dd HH:mm:ss}", edatetimepicker.value()),
+                datazl: myzlzl.value()
+            };
+            }
+
+            function cxClickc2() {
+                $("input[name=seriesType]:checked").prop("checked", false);
+                $("#typeLine").prop("checked", true);
+                $("#stack").prop("checked",false);
+                var mychart = $("#c2").data("kendoStockChart");
+
+				mychart.dataSource.read();
+
+            }
+            function exportsvgClickc() {
+                var target = event.srcElement ? event.srcElement : event.target;
+				var chart;
+				if (target.id === "export-svgc1") {
+                    chart = $("#c1").getKendoChart();
+                }
+                else if (target.id === "export-svgc2") {
+                    chart = $("#c2").data("kendoStockChart");
+                }
+                if (chart != null) {
+                     chart.exportSVG().done(function (data) {
+            kendo.saveAs({
+                dataURI: data,
+                fileName: "chart.svg",
+                proxyURL: "@Url.Action("Export_Save", "RKTJ")"
+            });
+        });
+				}
+
+
+
+            }
+            function exportpngClickc() {
+                var target = event.srcElement ? event.srcElement : event.target;
+				var chart;
+				if (target.id === "export-pngc1") {
+                    chart = $("#c1").getKendoChart();
+                }
+                else if (target.id === "export-pngc2") {
+                    chart = $("#c2").data("kendoStockChart");
+                }
+                if (chart != null) {
+                     chart.exportImage().done(function (data) {
+            kendo.saveAs({
+                dataURI: data,
+                fileName: "chart.png",
+                proxyURL: "@Url.Action("Export_Save", "RKTJ")"
+            });
+        });
+				}
+
+
+
+        }
+
+        function onAdditionalDatac2() {
+            return {
+                text: $("#selectsc2").val()
+            };
+            }
+           function refreshc2() {
+        var chart = $("#c2").data("kendoStockChart"),
+            series = chart.options.series,
+            type = $("input[name=seriesType]:checked").val(),
+            stack = $("#stack").prop("checked");
+
+               for (var i = 0, length = series.length; i < length; i++) {
+                   if (series[i].axis == null) {
+                       series[i].stack = stack;
+                       series[i].type = type;
+
+				   }
+
+		};
+
+        chart.refresh();
+    }
+			function startChangec2() {
+            const endPicker = $("#endc2").data("kendoDateTimePicker");
+            var startDate = this.value();
+
+            if (startDate) {
+                startDate = new Date(startDate);
+                startDate.setDate(startDate.getDate() + 1);
+                endPicker.min(startDate);
+            }
+        }
+
+        function endChangec2() {
+            const startPicker = $("#startc2").data("kendoDateTimePicker");
+            var endDate = this.value();
+
+            if (endDate) {
+                endDate = new Date(endDate);
+                endDate.setDate(endDate.getDate() - 1);
+                startPicker.max(endDate);
+            }
+            }
+    </script>
+    <style>
+        #c2 {
+            height: 600px;
+        }
+    </style>

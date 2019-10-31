@@ -1,4 +1,5 @@
-﻿using Kendo.Mvc.Extensions;
+﻿using Kendo.Mvc.Examples.Models;
+using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace TelerikMvcApp3.Controllers
 {
     public class RKTJController : Controller
     {
+
         // GET: rkGrid
         public ActionResult rkGrid()
         {
@@ -19,12 +21,18 @@ namespace TelerikMvcApp3.Controllers
         public ActionResult 折线图()
         {
             return View();
+           }
+        public ActionResult 卡片()
+        {
+            ViewBag.Message = "Welcome to ASP.NET MVC!";
+
+            return View();
         }
         public ActionResult Orders_Read2(string[] sdatepic, string[] edatepic, string[] datazl, [DataSourceRequest]DataSourceRequest request)
         {
 
             数据库处理 sjkcl = new 数据库处理();
-            List<资料种类> dataLists = dataLists = sjkcl.获取数据库表信息();
+            List<资料种类> dataLists  = sjkcl.获取数据库表信息();
             List<SKViewModel> result = new List<SKViewModel>();
             if (datazl == null || datazl.Length == 0)
             {
@@ -103,6 +111,85 @@ namespace TelerikMvcApp3.Controllers
                 }
             }
            
+            return Json(result);
+        }
+        public ActionResult 当前小时分钟数据()
+        {
+            string[] datazl = "SK_Other_Minute,SK_Pre_Minute,SK_RHU_Minute,SK_PRS_Minute,SK_Tem_Minute,SK_Wind_Minute".Split(',');
+            数据库处理 sjkcl = new 数据库处理();
+            List<资料种类> dataLists  = sjkcl.获取数据库表信息();
+            List<SKViewModel> result = new List<SKViewModel>();
+            string filter = "";
+            foreach (string item in datazl)
+                filter += $"\'{item}\',";
+            filter = filter.Substring(0, filter.Length - 1);
+            result = sjkcl.获取指定时间统计信息(DateTime.Now.Date.AddHours(DateTime.Now.Hour), DateTime.Now, filter);
+            List<DateTime> dateTimes = new List<DateTime>();
+            foreach(var item in result)
+            {
+                if (!dateTimes.Exists(y => y == item.时间))
+                    dateTimes.Add(Convert.ToDateTime(item.时间));
+            }
+            foreach(string item in datazl)
+            {
+                foreach(DateTime mydt in dateTimes)
+                {
+                    if (!result.Exists(y => y.时间 == mydt && y.名称 == item))
+                        result.Add(new SKViewModel { 时间 = mydt, 名称 = item, 统计个数 = 0 });
+                }
+            }
+            for (int i = 0; i < result.Count; i++)
+            {
+                资料种类 item = dataLists.First(y => y.数据库表名称 == result[i].名称);
+                if (item != null)
+                {
+                    result[i].名称 = item.表名称;
+
+                }
+            }
+
+            return Json(result);
+        }
+        public ActionResult Orders_Read4(string[] sdatepic, string[] edatepic, string[] datazl, [DataSourceRequest] DataSourceRequest request)
+        {
+            数据库处理 sjkcl = new 数据库处理();
+            List<资料种类> dataLists = sjkcl.获取数据库表信息();
+            List<SKViewModel> result = new List<SKViewModel>();
+            if (datazl == null || datazl.Length == 0)
+            {
+                result = sjkcl.获取指定时间统计信息(Convert.ToDateTime(sdatepic[0]), Convert.ToDateTime(edatepic[0]));
+            }
+            else
+            {
+                bool bs = false;
+                foreach (string item in datazl)
+                {
+                    if (item.ToLower() == "all")
+                        bs = true;
+                }
+                if (bs)
+                {
+                    result = sjkcl.获取指定时间统计信息(Convert.ToDateTime(sdatepic[0]), Convert.ToDateTime(edatepic[0]));
+                }
+                else
+                {
+                    string filter = "";
+                    foreach (string item in datazl)
+                        filter += $"\'{item}\',";
+                    filter = filter.Substring(0, filter.Length - 1);
+                    result = sjkcl.获取指定时间统计信息(Convert.ToDateTime(sdatepic[0]), Convert.ToDateTime(edatepic[0]), filter);
+                }
+            }
+            for (int i = 0; i < result.Count; i++)
+            {
+                资料种类 item = dataLists.First(y => y.数据库表名称 == result[i].名称);
+                if (item != null)
+                {
+                    result[i].名称 = item.表名称;
+
+                }
+            }
+
             return Json(result);
         }
         public ActionResult Excel_Export_Save(string contentType, string base64, string fileName)
@@ -196,8 +283,9 @@ namespace TelerikMvcApp3.Controllers
         }
         public ActionResult MyCustom()
         {
-            return PartialView("折线图");
+            return PartialView("卡片");
         }
+
         public ActionResult MyCustoms(string dataName)
         {
             if (dataName == "表格")
@@ -206,6 +294,12 @@ namespace TelerikMvcApp3.Controllers
                 return PartialView("折线图");
             else if (dataName == "股票图")
                 return PartialView("股票图");
+            else if (dataName == "卡片")
+                return PartialView("卡片");
+            else if (dataName == "滚动")
+                return PartialView("卡片-滚动轴");
+            else if (dataName == "饼状图")
+                return PartialView("饼状图");
             return PartialView("Index");
         }
         [HttpPost]

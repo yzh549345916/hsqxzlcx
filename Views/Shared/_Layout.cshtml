@@ -58,8 +58,9 @@
     <main>
         <div class="container-fluid">
             @RenderBody()
-           
         </div>
+        
+
     </main>
 
     <footer class="footer text-center d-flex align-items-center">
@@ -69,15 +70,17 @@
     </footer>
 
     <script>
-		kendo.culture("zh-CN");
-		$(document).ready(function () {
-			$("#responsive-panel").kendoResponsivePanel({
-				breakpoint: 768,
-				autoClose: false,
-				orientation: "top"
-			});
-		});
-       
-	</script>
+        kendo.culture("zh-CN");
+        $(document).ready(function () {
+            $("#responsive-panel").kendoResponsivePanel({
+                breakpoint: 768,
+                autoClose: false,
+                orientation: "top"
+            });
+        });
+
+    </script>
 </body>
 </html>
+
+

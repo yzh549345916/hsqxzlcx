@@ -1,0 +1,400 @@
+﻿@using TelerikMvcApp3.Models
+
+@{
+    ViewBag.Title = "入库信息折线图查询";
+}
+
+        <div id="list" style="margin-top:1em">
+            <div class="k-card-deck-scrollwrap">
+                <button id="leftbtu" class="k-button k-button-icon" onclick="scrollButtonClick">
+                    <span class="k-icon k-i-arrow-chevron-left"></span>
+                </button>
+                <div class="k-card-deck">
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("分钟温度入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("分钟温度入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取分钟温度", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Area(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+            .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)).BaseUnit(ChartAxisBaseUnit.Hours))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("分钟降水量入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("分钟降水量入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取分钟降水量", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .Series(series => series.Line(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+           .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false)).SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("分钟实况其他资料入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("分钟实况其他资料入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取分钟实况其他资料", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Column(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+           .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("分钟气压入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("分钟气压入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取分钟气压", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Line(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+            .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("分钟相对湿度入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("分钟相对湿度入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取分钟相对湿度", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Area(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+            .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("分钟风入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("分钟风入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取分钟风", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Column(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+           .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("小时温度入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("小时温度入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取小时温度", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Area(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+            .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("小时降水量入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("小时降水量入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取小时降水量", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .Series(series => series.Line(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+           .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false)).SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("c9")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("小时实况其他资料入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取小时实况其他资料", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Column(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+           .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("小时气压入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("小时气压入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取小时气压", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Line(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+            .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("小时相对湿度入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("小时相对湿度入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取小时相对湿度", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Area(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+            .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="k-card">
+                        <div class="k-card-body">
+                            @(Html.Kendo().StockChart<SKViewModel>()
+            .Name("小时风入库信息")
+            .HtmlAttributes(new { @class = "mychart" })
+            .DateField("时间")
+            .Title(tit => tit.Text("小时风入库信息"))
+            .DataSource(dataSource => dataSource
+            .Read(read => read.Action("获取小时风", "卡片"))
+            .Group(group => group.Add(model => model.名称))
+            .Sort(sort => sort.Add(model => model.时间).Ascending())
+            )
+            .Series(series => series.Column(model => model.统计个数).Name("#= group.value #").CategoryField("时间").Aggregate(ChartSeriesAggregate.Sum))
+           .CategoryAxis(axis => axis.Date().Title("时间").Labels(labels => labels.Format("dd日\nHH时").Step(1)))
+            .Legend(legend => legend.Visible(false))
+            .ChartArea(chartArea => chartArea.Background("transparent"))
+            .SeriesDefaults(seriesDefaults => seriesDefaults.Line().Style(ChartLineStyle.Smooth))
+            .ValueAxis(axis => axis.Numeric().Labels(labels => labels.Format("{0}个")))
+            .Tooltip(tooltip => tooltip.Visible(true).Opacity(0.8).Template("#=kendo.format('{0:MM月dd日HH时}',category)#：#=value#个"))
+            .Navigator(nav => nav.Series(series => { series.Line(s => s.统计个数); }).Hint(hint => hint.Format("{0:MM月dd日HH时}-{1:MM月dd日HH时}")).Select(DateTime.Now.AddHours(-10), DateTime.Now).CategoryAxis(ca => { ca.Axis.Labels.Format = "dd日\nHH时"; }))
+                            )
+
+                        </div>
+                        <div class="k-card-actions k-card-actions-vertical">
+                            <span class="k-card-action">
+                                <span class="k-button k-flat k-primary" data-value="View details of Full Coverage">查看表格</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <button id="rightbtu"  class="k-button k-button-icon" onclick="scrollButtonClick">
+                    <span class="k-icon k-i-arrow-chevron-right"></span>
+                </button>
+            </div>
+
+        @(Html.Kendo().Sortable()
+            .For("#list")
+            .Cursor("move")
+            .Filter(".k-card")
+            .CursorOffset(offset => offset.Left(-230).Top(-10))
+            .HintHandler("cardhint")
+            .PlaceholderHandler("cardplaceholder")
+        )
+            <script>
+                $(document).ready(function () {
+                    $("#leftbtu").bind("click", cardLeftscrollButtonClick);
+                    $("#rightbtu").bind("click", cardRightscrollButtonClick);
+					
+});
+			</script>
+        <style>
+            #list {
+                display: flex;
+                justify-content: center;
+            }
+
+            .k-card-deck-scrollwrap {
+                max-width: 1228px;
+            }
+
+            .k-card-deck {
+                box-sizing: border-box;
+                margin-left: -16px;
+                margin-right: -16px;
+                padding: 16px 16px 16px;
+                overflow-y: hidden;
+                overflow-x: auto;
+            }
+        </style>
+    </div>

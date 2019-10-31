@@ -7,6 +7,10 @@ html {
 body {
     margin-bottom: 80px;
 }
+.mybodystyle1 {
+    background: transparent url('image/5.jpg')no-repeat 50% 100%;
+}
+
 
 /* #region Navbar styles */
 .navbar-header {

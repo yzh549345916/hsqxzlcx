@@ -1,62 +1,63 @@
 ﻿@{
     ViewBag.Title = "首页";
 }
+    <script src="~/Scripts/卡片.js"></script>
+<div id="myKJ">
+    @(Html.Kendo().ToolBar().Name("toolbar").Items(items =>
+   {
+       items.Add().Type(CommandType.Button).Icon("menu").HtmlAttributes(new { @class = "k-flat" }).Click("toggleDrawer");
+       items.Add().Template("<h3 style='margin-left: 20px;'>呼和浩特市气象资料数据查询系统</h3>");
 
-    <div id="myKJ" >
-        @(Html.Kendo().ToolBar().Name("toolbar").Items(items =>
+           items.Add().Type(CommandType.Spacer);
+           items.Add().Type(CommandType.Separator);
+       items.Add().Type(CommandType.SplitButton).Text("主题选择").Id("mythemeSelect").Overflow(ShowInOverflowPopup.Never).MenuButtons(menuButtons =>
        {
-           items.Add().Type(CommandType.Button).Icon("menu").HtmlAttributes(new { @class = "k-flat" }).Click("toggleDrawer");
-           items.Add().Template("<h3 style='margin-left: 20px;'>呼和浩特市气象资料数据查询系统</h3>");
+           menuButtons.Add().Text("自定义V4").Id("bootstrap-v4");
+           menuButtons.Add().Text("拟物v2").Id("material-v2");
+           menuButtons.Add().Text("默认V2").Id("default-v2");
+           menuButtons.Add().Text("默认").Id("default");
+           menuButtons.Add().Text("宝蓝").Id("blueopal");
+           menuButtons.Add().Text("自定义").Id("bootstrap");
+           menuButtons.Add().Text("深色").Id("black");
+           menuButtons.Add().Text("silver").Id("silver");
+           menuButtons.Add().Text("灰色").Id("uniform");
+           menuButtons.Add().Text("metro").Id("metro");
+           menuButtons.Add().Text("metro深色").Id("metroblack");
+           menuButtons.Add().Text("高对比度").Id("highcontrast");
+           menuButtons.Add().Text("拟物").Id("material");
+           menuButtons.Add().Text("拟物深色").Id("materialblack");
+           menuButtons.Add().Text("月光").Id("moonlight");
+           menuButtons.Add().Text("office365").Id("office365");
+           menuButtons.Add().Text("nova").Id("nova");
+           menuButtons.Add().Text("flat").Id("flat");
+           menuButtons.Add().Text("fiori").Id("fiori");
+       }).Click("themeSelect");
+       items.Add().Type(CommandType.Button).Text("Action").Overflow(ShowInOverflowPopup.Auto);
+       items.Add().Type(CommandType.Button).Text("Another Action").Overflow(ShowInOverflowPopup.Auto);
+       items.Add().Type(CommandType.Button).Text("Something else here").Overflow(ShowInOverflowPopup.Auto);
+   }))
 
-               items.Add().Type(CommandType.Spacer);
-               items.Add().Type(CommandType.Separator);
-           items.Add().Type(CommandType.SplitButton).Text("主题选择").Id("mythemeSelect").Overflow(ShowInOverflowPopup.Never).MenuButtons(menuButtons =>
-           {
-               menuButtons.Add().Text("自定义V4").Id("bootstrap-v4");
-               menuButtons.Add().Text("拟物v2").Id("material-v2");
-               menuButtons.Add().Text("默认V2").Id("default-v2");
-               menuButtons.Add().Text("默认").Id("default");
-               menuButtons.Add().Text("宝蓝").Id("blueopal");
-               menuButtons.Add().Text("自定义").Id("bootstrap");
-               menuButtons.Add().Text("深色").Id("black");
-               menuButtons.Add().Text("silver").Id("silver");
-               menuButtons.Add().Text("灰色").Id("uniform");
-               menuButtons.Add().Text("metro").Id("metro");
-               menuButtons.Add().Text("metro深色").Id("metroblack");
-               menuButtons.Add().Text("高对比度").Id("highcontrast");
-               menuButtons.Add().Text("拟物").Id("material");
-               menuButtons.Add().Text("拟物深色").Id("materialblack");
-               menuButtons.Add().Text("月光").Id("moonlight");
-               menuButtons.Add().Text("office365").Id("office365");
-               menuButtons.Add().Text("nova").Id("nova");
-               menuButtons.Add().Text("flat").Id("flat");
-               menuButtons.Add().Text("fiori").Id("fiori");
-           }).Click("themeSelect");
-           items.Add().Type(CommandType.Button).Text("Action").Overflow(ShowInOverflowPopup.Auto);
-           items.Add().Type(CommandType.Button).Text("Another Action").Overflow(ShowInOverflowPopup.Auto);
-           items.Add().Type(CommandType.Button).Text("Something else here").Overflow(ShowInOverflowPopup.Auto);
-       }))
-
-        @(Html.Kendo().Drawer()
-            .Name("drawer")
-            .Template(@"
-            <ul>
-                <li data-role='drawer-item'><span class='k-icon k-i-table-unmerge'></span><span class='k-item-text'>表格</span></li>   
-                <li data-role='drawer-item' class='k-state-selected'><span class='k-icon k-i-stumble-upon '></span><span class='k-item-text'>图表</span></li>            
-                <li data-role='drawer-item'><span class='k-icon icos icos-zx'></span><span class='k-item-text'>股票图</span></li>  
-                <li data-role='drawer-item'><span class='k-icon k-i-hyperlink-email'></span><span class='k-item-text'>Attachments</span></li>
-                <li data-role='drawer-item'><span class='k-icon k-i-star-outline k-i-bookmark-outline'></span><span class='k-item-text'>Favourites</span></li>
-            </ul>
-        ")
-                .Mode("push")
-                .Mini(true)
-                .Position("left")
-                .MinHeight(330)
-                .SwipeToOpen(false).Content("<div id='drawerContainer'></div>")
-        .Events(x => x.ItemClick("onItemClick")))
+    @(Html.Kendo().Drawer()
+        .Name("drawer")
+        .Template(@"
+        <ul>
+            <li data-role='drawer-item'><span class='k-icon k-i-table-unmerge'></span><span class='k-item-text'>表格</span></li>
+            <li data-role='drawer-item'><span class='k-icon k-i-stumble-upon '></span><span class='k-item-text'>图表</span></li>
+            <li data-role='drawer-item'><span class='k-icon icos icos-zx'></span><span class='k-item-text'>股票图</span></li>
+            <li data-role='drawer-item'  class='k-state-selected'><span class='k-icon k-i-hyperlink-email'></span><span class='k-item-text'>卡片</span></li>
+            <li data-role='drawer-item'><span class='k-icon k-i-star-outline k-i-bookmark-outline'></span><span class='k-item-text'>饼状图</span></li>
+            <li data-role='drawer-item'><span class='k-icon k-i-star-outline k-i-bookmark-outline'></span><span class='k-item-text'>滚动</span></li>
+        </ul>
+    ")
+            .Mode("push")
+            .Mini(true)
+            .Position("left")
+            .MinHeight(330)
+            .SwipeToOpen(false).Content("<div id='drawerContainer'></div>")
+    .Events(x => x.ItemClick("onItemClick")))
 
 
-        <script>
+    <script>
             function toggleDrawer() {
                 const drawerInstance = $("#drawer").data().kendoDrawer;
                 const drawerContainer = drawerInstance.drawerContainer;
@@ -191,7 +192,7 @@
             };
             }
 
-            
+
         function cxClick() {
             const myGrid = $("#mygrid").data("kendoGrid");
 
@@ -202,7 +203,7 @@
                 text: $("#selects").val()
             };
             }
-           
+
         function startChange() {
             const endPicker = $("#end").data("kendoDateTimePicker");
             var startDate = this.value();
@@ -224,16 +225,17 @@
                 startPicker.max(endDate);
             }
             }
-            
-           
+
+
             function char1pdfDC() {
                  $("#c1").getKendoChart().saveAsPDF();
-                //<a href="~/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf">~/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf</a>
+
             }
             function char2pdfDC() {
-                 $("#c2").getKendoChart().saveAsPDF();
-               
+                 $("#c2").getKendoStockChart().saveAsPDF();
+
             }
+
            kendo.pdf.defineFont({
             "DejaVu Sans"             : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans.ttf",
             "DejaVu Sans|Bold"        : "/Content/kendo/2019.3.917/fonts/DejaVu/DejaVuSans-Bold.ttf",
@@ -252,13 +254,13 @@
             }
 
 			function cxClickc1() {
-                var mychart = $("#c1").data("kendoChart"),
-                    series = mychart.options.series,
-                    stack = $("#stack").prop("checked");
-                    $("input[name=seriesType]:checked").val("line");
+                var mychart = $("#c1").data("kendoChart");
+                $("input[name=seriesType]:checked").prop("checked", false);
+                $("#typeLine").prop("checked", true);
+                $("#stack").prop("checked",false);
 
-                mychart.dataSource.read();
-			
+				mychart.dataSource.read();
+
 			}
         function onAdditionalDatac1() {
             return {
@@ -315,12 +317,59 @@
             }
 
             function cxClickc2() {
-                
+                $("input[name=seriesType]:checked").prop("checked", false);
+                $("#typeLine").prop("checked", true);
+                $("#stack").prop("checked",false);
                 var mychart = $("#c2").data("kendoStockChart");
 
 				mychart.dataSource.read();
-			
-			}
+
+            }
+            function exportsvgClickc() {
+                var target = event.srcElement ? event.srcElement : event.target;
+				var chart;
+				if (target.id === "export-svgc1") {
+                    chart = $("#c1").getKendoChart();
+                }
+                else if (target.id === "export-svgc2") {
+                    chart = $("#c2").data("kendoStockChart");
+                }
+                if (chart != null) {
+                     chart.exportSVG().done(function (data) {
+            kendo.saveAs({
+                dataURI: data,
+                fileName: "chart.svg",
+                proxyURL: "@Url.Action("Export_Save", "RKTJ")"
+            });
+        });
+				}
+
+
+
+            }
+            function exportpngClickc() {
+                var target = event.srcElement ? event.srcElement : event.target;
+				var chart;
+				if (target.id === "export-pngc1") {
+                    chart = $("#c1").getKendoChart();
+                }
+                else if (target.id === "export-pngc2") {
+                    chart = $("#c2").data("kendoStockChart");
+                }
+                if (chart != null) {
+                     chart.exportImage().done(function (data) {
+            kendo.saveAs({
+                dataURI: data,
+                fileName: "chart.png",
+                proxyURL: "@Url.Action("Export_Save", "RKTJ")"
+            });
+        });
+				}
+
+
+
+        }
+
         function onAdditionalDatac2() {
             return {
                 text: $("#selectsc2").val()
@@ -332,10 +381,14 @@
             type = $("input[name=seriesType]:checked").val(),
             stack = $("#stack").prop("checked");
 
-        for (var i = 0, length = series.length; i < length; i++) {
-            series[i].stack = stack;
-            series[i].type = type;
-        };
+               for (var i = 0, length = series.length; i < length; i++) {
+                   if (series[i].axis == null) {
+                       series[i].stack = stack;
+                       series[i].type = type;
+
+				   }
+
+		};
 
         chart.refresh();
     }
@@ -360,39 +413,39 @@
                 startPicker.max(endDate);
             }
             }
-        </script>
+    </script>
 
-        <style>
-            #drawer-content li {
-                font-size: 1.2em;
-                background: 0 0;
-                border-radius: 0;
-                border-width: 0 0 1px;
-                border-color: rgba(33, 37, 41, 0.125);
-                border-style: solid;
-                line-height: 1.5em;
-                padding: .84em .84em 1.23em .84em;
+    <style>
+        #drawer-content li {
+            font-size: 1.2em;
+            background: 0 0;
+            border-radius: 0;
+            border-width: 0 0 1px;
+            border-color: rgba(33, 37, 41, 0.125);
+            border-style: solid;
+            line-height: 1.5em;
+            padding: .84em .84em 1.23em .84em;
+        }
+
+            #drawer-content li:last-child {
+                border: 0;
             }
 
-                #drawer-content li:last-child {
-                    border: 0;
-                }
+        .hidden {
+            display: none;
+        }
 
-            .hidden {
-                display: none;
-            }
-
-            .icos {
+        .icos {
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             background-color: transparent;
         }
 
-            .icos-zx {
-                background-image: url('../../Content/icos/折线图.png');
-            }
-        </style>
-    </div>
+        .icos-zx {
+            background-image: url('../../Content/icos/折线图.png');
+        }
+    </style>
+</div>
 
 

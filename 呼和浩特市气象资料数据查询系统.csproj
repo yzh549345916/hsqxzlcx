@@ -122,6 +122,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\myHomeController.cs" />
     <Compile Include="Controllers\RKTJ\RKTJController.cs" />
+    <Compile Include="Controllers\卡片Controller.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -140,6 +141,11 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\icos\折线图.png" />
+    <Content Include="Content\image\2.jpg" />
+    <Content Include="Content\image\3.jpg" />
+    <Content Include="Content\image\5.jpg" />
+    <Content Include="Content\image\6.jpg" />
+    <Content Include="Content\image\7.jpg" />
     <Content Include="Content\kendo\2019.3.917\Black\editor.png" />
     <Content Include="Content\kendo\2019.3.917\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2019.3.917\Black\indeterminate.gif" />
@@ -590,6 +596,7 @@
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -751,6 +758,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\theme-chooser.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Scripts\卡片.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -918,6 +926,8 @@
     <Content Include="Views\RKTJ\折线图.cshtml" />
     <Content Include="Views\RKTJ\卡片.cshtml" />
     <Content Include="Views\RKTJ\股票图.cshtml" />
+    <Content Include="Views\RKTJ\卡片-滚动轴.cshtml" />
+    <Content Include="Views\RKTJ\饼状图.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Site.css" />
@@ -931,6 +941,7 @@
     <Folder Include="Views\dataDisplay\" />
     <Folder Include="Views\Default\" />
     <Folder Include="Views\mycs\" />
+    <Folder Include="Views\卡片\" />
     <Folder Include="Views\数据库\" />
   </ItemGroup>
   <ItemGroup>
@@ -965,7 +976,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties UseCdnSupport="False" content_4kendo_42019_13_1917_4kendo_1black_1min_1css_1map__JsonSchema="" content_4bootstrap_1css_1map__JsonSchema="" />
+      <UserProperties content_4bootstrap_1css_1map__JsonSchema="" content_4kendo_42019_13_1917_4kendo_1black_1min_1css_1map__JsonSchema="" UseCdnSupport="False" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

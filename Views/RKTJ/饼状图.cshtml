@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "入库信息折饼状图查询";
+}
+@using TelerikMvcApp3.Models
+    <div style="margin-top:4em">
+        @(Html.Kendo().Chart<SKViewModel>()
+             .Name("c1")
+             .Title(tit => tit.Text("入库统计信息查询").Position(ChartTitlePosition.Top))
+             .DataSource(dataSource => dataSource
+                 .Read(read => read.Action("当前小时分钟数据", "RKTJ"))
+                 
+                 .Sort(sort => sort.Add(model => model.时间).Ascending())
+             )
+             .Series(series =>
+                     {
+                 series.Pie(model => model.统计个数,model => model.名称,null,null).Overlay(ChartPieSeriesOverlay.None).Labels(labels => labels
+                .Template("#= category #: #= value#个")
+                .Background("transparent")
+                .Align(ChartPieLabelsAlign.Circle)
+                .Visible(true)
+            );
+             }).Legend(legend => legend.Position(ChartLegendPosition.Top))
+            //.SeriesDefaults(sf=>sf.Pie().Labels(lab=> {lab.Visible(true);lab.Format("{0}个");}))//.ChartArea(chartArea => chartArea.Background("transparent"))
+            .Tooltip(tooltip => tooltip
+                                 .Visible(true)
+                                 .Shared(true)
+                                    .Format("{0:HH:mm}")
+                                      .Opacity(0.8)
+                             )
+                                  
+        )
+    </div>
